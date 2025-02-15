@@ -17,7 +17,7 @@ const ScholarshipSearch = () => {
   const [caste, setCaste] = useState("");
   const [religion, setReligion] = useState("");
   const [aiFeedback, setAIFeedback] = useState("");
-  const navigate = useNavigate(); 
+  
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -34,11 +34,6 @@ const ScholarshipSearch = () => {
     } catch (err) {
       console.error(err);
     }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // Clearing the token from localStorage
-    navigate("/login"); 
   };
 
   const capitalize = (str) => {
@@ -58,13 +53,7 @@ const ScholarshipSearch = () => {
             <Typography variant="h4" gutterBottom>
               Scholarship Search
             </Typography>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
+           
           </Box>
           <form
             onSubmit={handleSearch}

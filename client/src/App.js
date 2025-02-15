@@ -8,8 +8,10 @@ import {
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ScholarshipSearch from "./components/ScholarshipSearch";
-import ProtectedRoute from "./components/ProtectedRoute";
-import "./App.css";
+import ProtectedRoute from "./components/ProtectedRoute"; 
+import DashboardLayout from "./components/DashboardLayout"
+import Home from "./components/Home";
+
 
 function App() {
   return (
@@ -20,8 +22,12 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        {/* Protected routes with Navbar */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/search" element={<ScholarshipSearch />} />
+          <Route element={<DashboardLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/search" element={<ScholarshipSearch />} />
+          </Route>
         </Route>
       </Routes>
     </Router>
@@ -29,3 +35,4 @@ function App() {
 }
 
 export default App;
+
