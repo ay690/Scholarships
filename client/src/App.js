@@ -5,13 +5,15 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import ScholarshipSearch from "./components/ScholarshipSearch";
-import ProtectedRoute from "./components/ProtectedRoute"; 
-import DashboardLayout from "./components/DashboardLayout"
-import Home from "./components/Home";
 
+import {
+  Login,
+  ProtectedRoute,
+  Register,
+  DashboardLayout,
+  Home,
+  ScholarshipSearch,
+} from "./components";
 
 function App() {
   return (
@@ -35,4 +37,3 @@ function App() {
 }
 
 export default App;
-
