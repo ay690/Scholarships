@@ -9,7 +9,7 @@ const groq = new Groq({
 });
 
 // search api 
-router.post("/search", async (req, res) => {
+router.post("/search", authenticate, async (req, res) => {
   try {
 
     const prompt = `Provide a JSON array of scholarship objects. Each object should have the following keys:
