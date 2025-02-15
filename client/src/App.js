@@ -8,16 +8,21 @@ import {
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ScholarshipSearch from "./components/ScholarshipSearch";
+import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to={"/login"} />} />
+        <Route path="/" element={<Navigate to="/login" />} />
+
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/search" element={<ScholarshipSearch />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/search" element={<ScholarshipSearch />} />
+        </Route>
       </Routes>
     </Router>
   );

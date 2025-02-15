@@ -10,12 +10,14 @@ import {
   CardContent,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom"; 
 
 const ScholarshipSearch = () => {
   const [scholarships, setScholarships] = useState([]);
   const [caste, setCaste] = useState("");
   const [religion, setReligion] = useState("");
   const [aiFeedback, setAIFeedback] = useState("");
+  const navigate = useNavigate(); 
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -34,6 +36,11 @@ const ScholarshipSearch = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Clearing the token from localStorage
+    navigate("/login"); 
+  };
+
   const capitalize = (str) => {
     if (!str) return "";
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -47,9 +54,18 @@ const ScholarshipSearch = () => {
         transition={{ duration: 0.5 }}
       >
         <Box sx={{ mt: 4 }}>
-          <Typography variant="h4" align="center" gutterBottom>
-            Scholarship Search
-          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Typography variant="h4" gutterBottom>
+              Scholarship Search
+            </Typography>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </Box>
           <form
             onSubmit={handleSearch}
             style={{
