@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, TextField, Button, Typography, Box } from '@mui/material';
+import { Container, TextField, Button, Typography, Box, Link } from '@mui/material';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 const Register = () => {
   const [name, setName] = useState('');
-  const [email,    setEmail]    = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [caste,    setCaste]    = useState('');
+  const [caste, setCaste] = useState('');
   const [religion, setReligion] = useState('');
   const navigate = useNavigate();
 
@@ -79,6 +79,14 @@ const Register = () => {
               Register
             </Button>
           </form>
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <Typography variant="body2">
+              Already have an account?{' '}
+              <Link component={RouterLink} to="/login" underline="hover">
+                Login
+              </Link>
+            </Typography>
+          </Box>
         </Box>
       </motion.div>
     </Container>
@@ -86,4 +94,3 @@ const Register = () => {
 };
 
 export default Register;
-

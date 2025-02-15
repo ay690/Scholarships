@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, TextField, Button, Typography, Box } from '@mui/material';
+import { Container, TextField, Button, Typography, Box, Link } from '@mui/material';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail]       = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
@@ -53,6 +53,14 @@ const Login = () => {
               Login
             </Button>
           </form>
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <Typography variant="body2">
+              Don't have an account?{' '}
+              <Link component={RouterLink} to="/register" underline="hover">
+                Register
+              </Link>
+            </Typography>
+          </Box>
         </Box>
       </motion.div>
     </Container>
