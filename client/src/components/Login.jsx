@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Container, TextField, Button, Typography, Box } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,7 +14,6 @@ const Login = () => {
     try {
       const res = await axios.post('http://localhost:5001/api/auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
-      
       navigate('/search');
     } catch (err) {
       console.error(err);
@@ -21,32 +21,43 @@ const Login = () => {
   };
 
   return (
-    <motion.div
-      className="container"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="form-container">
-        <h2>Login</h2>
-        <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    </motion.div>
+    <Container maxWidth="sm">
+      <motion.div 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        transition={{ duration: 0.5 }}
+      >
+        <Box sx={{ mt: 8, p: 4, backgroundColor: 'white', borderRadius: 2, boxShadow: 2 }}>
+          <Typography variant="h4" align="center" gutterBottom>
+            Login
+          </Typography>
+          <form onSubmit={handleLogin}>
+            <TextField
+              label="Email"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+              Login
+            </Button>
+          </form>
+        </Box>
+      </motion.div>
+    </Container>
   );
 };
 
 export default Login;
+
