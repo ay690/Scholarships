@@ -5,9 +5,10 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.js");
 
-// Set a fallback for random bytes generation using Node's crypto module 
+// Set a fallback for random bytes generation using Node's crypto module
 bcrypt.setRandomFallback(() => crypto.randomBytes(16));
 
+//register
 router.post("/register", async (req, res) => {
   try {
     // Use name if your model uses that field
@@ -33,7 +34,7 @@ router.post("/register", async (req, res) => {
     console.log("Hashed password:", hashedPassword);
 
     const newUser = new User({
-      name, 
+      name,
       email,
       password: hashedPassword,
       caste,
@@ -57,5 +58,52 @@ router.post("/register", async (req, res) => {
   }
 });
 
+//login
+
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found!",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Invalid Credentials",
+      });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    res.json({
+      message: "User logged in successfully",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        caste: user.caste,
+        religion: user.religion,
+      },
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router;
