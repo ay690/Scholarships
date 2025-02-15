@@ -11,7 +11,7 @@ const groq = new Groq({
 // search api 
 router.post("/search", async (req, res) => {
   try {
-    // Define the prompt to get a JSON array in the desired structure.
+
     const prompt = `Provide a JSON array of scholarship objects. Each object should have the following keys:
 - name (string)
 - description (string)
@@ -37,7 +37,7 @@ The output must be valid JSON and not contain any additional text. For example:
       max_tokens: 1500,
     });
 
-    // Extract the returned text.
+ 
     const jsonString = aiResponse.choices[0].message.content;
     console.log("Groq API raw response:", jsonString);
 
@@ -51,7 +51,7 @@ The output must be valid JSON and not contain any additional text. For example:
       });
     }
 
-    // Insert the scholarships into MongoDB.
+    // Inserting the scholarships into MongoDB.
     const insertedScholarships = await Scholarship.insertMany(scholarships);
     res.json({
       message: "Scholarships imported successfully.",
