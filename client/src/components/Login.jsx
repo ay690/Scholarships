@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 import {
   Container,
   TextField,
@@ -10,58 +10,75 @@ import {
   Card,
   CardContent,
   CardMedia,
-} from '@mui/material';
-import { motion } from 'framer-motion';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import loginImage from "../assets/login.jpg"
+} from "@mui/material";
+import { motion } from "framer-motion";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import loginImage from "../assets/login.jpg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-  const [email, setEmail]       = useState('');
-  const [password, setPassword] = useState('');
-  const navigate              = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      toast.error("All fields are required");
+      return;
+    }
     try {
-      const res = await axios.post(
-        'http://localhost:5001/api/auth/login',
-        { email, password }
-      );
-      localStorage.setItem('token', res.data.token);
-      navigate('/search');
+      const res = await axios.post("http://localhost:5001/api/auth/login", {
+        email,
+        password,
+      });
+      localStorage.setItem("token", res.data.token);
+      toast.success("Logged in successfully");
+
+      setTimeout(() => {
+        navigate("/search");
+      }, 2000);
     } catch (err) {
       console.error(err);
+      toast.error("Login failed. Please try again.");
     }
   };
 
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        background: 'url(https://source.unsplash.com/random/1600x900?abstract)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        minHeight: "100vh",
+        background: "url(https://source.unsplash.com/random/1600x900?abstract)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <Container maxWidth="sm">
-        <motion.div 
+        <ToastContainer />
+        <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <Card sx={{ borderRadius: 3, boxShadow: 3, overflow: 'hidden' }}>
+          <Card sx={{ borderRadius: 3, boxShadow: 3, overflow: "hidden" }}>
             <CardMedia
               component="img"
               height="200"
-              loading='lazy'
-              image={loginImage} 
+              loading="lazy"
+              image={loginImage}
               alt="Login Header"
             />
-            <CardContent sx={{ backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
-              <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold' }}>
+            <CardContent sx={{ backgroundColor: "rgba(255, 255, 255, 0.95)" }}>
+              <Typography
+                variant="h4"
+                align="center"
+                gutterBottom
+                sx={{ fontWeight: "bold" }}
+              >
                 Login
               </Typography>
               <Box component="form" onSubmit={handleLogin} sx={{ mt: 2 }}>
@@ -92,9 +109,9 @@ const Login = () => {
                   Login
                 </Button>
               </Box>
-              <Box sx={{ mt: 2, textAlign: 'center' }}>
+              <Box sx={{ mt: 2, textAlign: "center" }}>
                 <Typography variant="body2">
-                  Don't have an account?{' '}
+                  Don't have an account?{" "}
                   <Link component={RouterLink} to="/register" underline="hover">
                     Register
                   </Link>
@@ -109,4 +126,3 @@ const Login = () => {
 };
 
 export default Login;
-

@@ -14,6 +14,8 @@ import {
 import { motion } from "framer-motion";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import RegisterImage from "../assets/register.jpg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -23,15 +25,24 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (!name || !email || !password) {
+      toast.error("All fields are required");
+      return;
+    }
     try {
       await axios.post("http://localhost:5001/api/auth/register", {
         name,
         email,
         password,
       });
-      navigate("/login");
+      toast.success("Registered successfully");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (err) {
       console.error(err);
+      toast.error("Registration failed. Please try again.");
     }
   };
 
@@ -50,6 +61,7 @@ const Register = () => {
       }}
     >
       <Container maxWidth="md">
+        <ToastContainer />
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
