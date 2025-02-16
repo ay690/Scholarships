@@ -20,12 +20,12 @@ const UserSchema = new mongoose.Schema(
 
     caste: {
       type: String,
-      required: true,
+      required: false,
     },
     
     religion: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   { timestamps: true }
