@@ -12,15 +12,18 @@ import {
   Grid,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import { Loader } from "./index";
 
 const ScholarshipSearch = () => {
   const [scholarships, setScholarships] = useState([]);
   const [caste, setCaste] = useState("");
   const [religion, setReligion] = useState("");
   const [aiFeedback, setAIFeedback] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
@@ -29,10 +32,15 @@ const ScholarshipSearch = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       console.log("API Response:", res.data);
-      setScholarships(res.data?.data);
-      setAIFeedback(res.data?.aiFeedback);
+      
+      setTimeout(() => {
+        setScholarships(res.data?.data);
+        setAIFeedback(res.data?.aiFeedback);
+        setLoading(false);
+      }, 2500);
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
   };
 
@@ -40,6 +48,10 @@ const ScholarshipSearch = () => {
     if (!str) return "";
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Container maxWidth="md" sx={{ mt: 10, mb: 4 }}>
@@ -58,7 +70,6 @@ const ScholarshipSearch = () => {
           </Typography>
         </Box>
 
-        {/* Search Form */}
         <Box
           component="form"
           onSubmit={handleSearch}
@@ -114,7 +125,6 @@ const ScholarshipSearch = () => {
           </Box>
         )}
 
-       
         <Grid container spacing={3}>
           {scholarships?.map((sch, index) => (
             <Grid item xs={12} sm={6} md={6} key={index}>
@@ -129,14 +139,20 @@ const ScholarshipSearch = () => {
                     subheader={capitalize(sch.institutionType)}
                   />
                   <CardContent>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
                       {sch.description}
                     </Typography>
                     <Typography variant="body2" sx={{ mt: 1 }}>
-                      <strong>Eligible Castes:</strong> {sch.eligibleCastes?.join(", ")}
+                      <strong>Eligible Castes:</strong>{" "}
+                      {sch.eligibleCastes?.join(", ") || "Anyone"}
                     </Typography>
                     <Typography variant="body2">
-                      <strong>Eligible Religions:</strong> {sch.eligibleReligions?.join(", ")}
+                      <strong>Eligible Religions:</strong>{" "}
+                      {sch.eligibleReligions?.join(", ") || "Anyone"}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -150,4 +166,5 @@ const ScholarshipSearch = () => {
 };
 
 export default ScholarshipSearch;
+
 

@@ -7,6 +7,7 @@ import ScholarshipSearch from "./ScholarshipSearch";
 import TestimonialSection from "./Testimonial";
 import Home from "./Home";
 import Footer from "./Footer";
+import Loader from "./Loader";
 import ScholarshipAwards from "./ScholarshipsAward";
 
 export {
@@ -18,6 +19,7 @@ export {
   ProtectedRoute,
   DashboardLayout,
   Login,
+  Loader,
   Register,
   NavBar,
 };
