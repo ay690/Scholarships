@@ -23,7 +23,7 @@ const NavBar = () => {
   const currentTab = location.pathname === "/search" ? 1 : 0;
 
   return (
-    <AppBar position="static" sx={{ background: "#1B1212" }}>
+    <AppBar position="fixed" sx={{ background: "#5b88d7" }}>
       <Toolbar>
         {/* Logo on the left */}
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
