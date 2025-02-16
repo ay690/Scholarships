@@ -8,6 +8,8 @@ import {
   Box,
   Card,
   CardContent,
+  CardHeader,
+  Grid,
 } from "@mui/material";
 import { motion } from "framer-motion";
 
@@ -16,7 +18,6 @@ const ScholarshipSearch = () => {
   const [caste, setCaste] = useState("");
   const [religion, setReligion] = useState("");
   const [aiFeedback, setAIFeedback] = useState("");
-  
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -41,81 +42,112 @@ const ScholarshipSearch = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ mt: 10, mb: 4 }}>
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
-        <Box sx={{ mt: 4 }}>
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Typography variant="h4" gutterBottom>
-              Scholarship Search
-            </Typography>
-           
-          </Box>
-          <form
-            onSubmit={handleSearch}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginBottom: "20px",
+        {/* Header Section */}
+        <Box sx={{ textAlign: "center", mb: 4 }}>
+          <Typography variant="h3" component="h1" gutterBottom>
+            Scholarship Search
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary">
+            Find the perfect scholarship based on your caste and religion.
+          </Typography>
+        </Box>
+
+        {/* Search Form */}
+        <Box
+          component="form"
+          onSubmit={handleSearch}
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            gap: 2,
+            mb: 4,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TextField
+            label="Caste"
+            variant="outlined"
+            value={caste}
+            onChange={(e) => setCaste(e.target.value)}
+            fullWidth
+            sx={{ maxWidth: { sm: "300px" } }}
+          />
+          <TextField
+            label="Religion"
+            variant="outlined"
+            value={religion}
+            onChange={(e) => setReligion(e.target.value)}
+            fullWidth
+            sx={{ maxWidth: { sm: "300px" } }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{ height: "56px" }}
+          >
+            Search
+          </Button>
+        </Box>
+
+        {/* AI Feedback */}
+        {aiFeedback && (
+          <Box
+            sx={{
+              p: 2,
+              mb: 4,
+              borderRadius: 1,
+              backgroundColor: "warning.light",
             }}
           >
-            <TextField
-              label="Caste"
-              variant="outlined"
-              value={caste}
-              onChange={(e) => setCaste(e.target.value)}
-              sx={{ mr: 2, width: "30%" }}
-            />
-            <TextField
-              label="Religion"
-              variant="outlined"
-              value={religion}
-              onChange={(e) => setReligion(e.target.value)}
-              sx={{ mr: 2, width: "30%" }}
-            />
-            <Button type="submit" variant="contained" color="primary">
-              Search
-            </Button>
-          </form>
-          <Typography variant="h5" gutterBottom>
-            Results
-          </Typography>
+            <Typography variant="body1">
+              <strong>AI Feedback:</strong> {aiFeedback}
+            </Typography>
+          </Box>
+        )}
+
+       
+        <Grid container spacing={3}>
           {scholarships?.map((sch, index) => (
-            <Card key={index} sx={{ mb: 2 }}>
-              <CardContent>
-                <Typography variant="h6">{sch.name}</Typography>
-                <Typography variant="body2">{sch.description}</Typography>
-                <Typography variant="body2">
-                  <strong>Eligible Castes:</strong>{" "}
-                  {sch.eligibleCastes?.join(", ")}
-                </Typography>
-                <Typography variant="body2">
-                  <strong>Eligible Religions:</strong>{" "}
-                  {sch.eligibleReligions?.join(", ")}
-                </Typography>
-                <Typography variant="body2">
-                  <strong>Institution Type:</strong>{" "}
-                  {capitalize(sch.institutionType)}
-                </Typography>
-              </CardContent>
-            </Card>
+            <Grid item xs={12} sm={6} md={6} key={index}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+              >
+                <Card sx={{ borderRadius: 2, boxShadow: 3 }}>
+                  <CardHeader
+                    title={sch.name}
+                    subheader={capitalize(sch.institutionType)}
+                  />
+                  <CardContent>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      {sch.description}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      <strong>Eligible Castes:</strong> {sch.eligibleCastes?.join(", ")}
+                    </Typography>
+                    <Typography variant="body2">
+                      <strong>Eligible Religions:</strong> {sch.eligibleReligions?.join(", ")}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </Grid>
           ))}
-          {aiFeedback && (
-            <Box
-              sx={{ mt: 3, p: 2, backgroundColor: "#fff3cd", borderRadius: 1 }}
-            >
-              <Typography variant="body1">
-                <strong>AI Feedback:</strong> {aiFeedback}
-              </Typography>
-            </Box>
-          )}
-        </Box>
+        </Grid>
       </motion.div>
     </Container>
   );
 };
 
 export default ScholarshipSearch;
+
