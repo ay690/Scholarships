@@ -32,13 +32,13 @@ The output must be valid JSON and not contain any additional text. For example:
 
     // Calling the Groq API to get the scholarship JSON.
     const aiResponse = await groq.chat.completions.create({
-      model: "mixtral-8x7b-32768",
+      model: "llama-3.3-70b-versatile",
       messages: [{ role: "user", content: prompt }],
       max_tokens: 1500,
     });
 
  
-    const jsonString = aiResponse.choices[0].message.content;
+    const jsonString = aiResponse.choices[0]?.message.content;
     console.log("Groq API raw response:", jsonString);
 
     let scholarships;
